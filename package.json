@@ -1,0 +1,17 @@
+{
+  "name": "gql-endpoint",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^3.13.0",
+    "csv-parse": "^5.5.5",
+    "csvtojson": "^2.0.10"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  },
+  "scripts": {
+    "format": "prettier --write \"src/**/*.ts\""
+  }
+}
