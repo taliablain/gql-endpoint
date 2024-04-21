@@ -60,10 +60,18 @@ class CustomerDataSource extends apollo_datasource_1.DataSource {
             }
         });
     }
-    getCustomers() {
+    getCustomers(args) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.loadData();
-            return this.customers;
+            const filteredCustomers = this.customers.filter(customer => {
+                for (const key in args) {
+                    if (args.hasOwnProperty(key) && args[key] && customer[key] !== args[key]) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+            return filteredCustomers;
         });
     }
 }

@@ -52,10 +52,18 @@ class ProductDataSource extends apollo_datasource_1.DataSource {
             this.products = (yield (0, csvtojson_1.default)().fromString(fileContent));
         });
     }
-    getProducts() {
+    getProducts(args) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.loadData();
-            return this.products;
+            const filteredProducts = this.products.filter(product => {
+                for (const key in args) {
+                    if (args.hasOwnProperty(key) && args[key] && product[key] !== args[key]) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+            return filteredProducts;
         });
     }
 }

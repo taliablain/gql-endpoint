@@ -12,11 +12,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const resolvers = {
     Query: {
-        getCustomer: (parent, args, context, info) => __awaiter(void 0, void 0, void 0, function* () {
-            return context.dataSources.customerDataSource.getCustomers();
+        customers: (parent, args, context, info) => __awaiter(void 0, void 0, void 0, function* () {
+            const customers = yield context.dataSources.customerDataSource.getCustomers(args);
+            return customers;
         }),
-        getProduct: (parent, args, context, info) => __awaiter(void 0, void 0, void 0, function* () {
-            return context.dataSources.productDataSource.getProducts();
+        products: (parent, args, context, info) => __awaiter(void 0, void 0, void 0, function* () {
+            const products = yield context.dataSources.productDataSource.getProducts(args);
+            return products;
         }),
     },
 };

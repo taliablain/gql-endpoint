@@ -10,23 +10,43 @@ interface ResolverContext {
   };
 }
 
+export type CustomerArgs = {
+  email?: string,
+  forename?: string,
+  surname?: string,
+  contactNumber?: string,
+  postcode?: string,
+  [key: string]: string | undefined; // Index signature indicating any string key is valid
+}
+
+export type ProductArgs = {
+  vin?: string,
+  colour?: string,
+  make?: string,
+  model?: string,
+  price?: number,
+  [key: string]: string | number | undefined
+}
+
 const resolvers = {
   Query: {
-    getCustomer: async (
+    customers: async (
       parent: any,
-      args: any,
+      args: CustomerArgs,
       context: ResolverContext,
       info: any
     ) => {
-      return context.dataSources.customerDataSource.getCustomers();
+      const customers = await context.dataSources.customerDataSource.getCustomers(args);
+      return customers;
     },
-    getProduct: async (
+    products: async (
       parent: any,
-      args: any,
+      args: ProductArgs,
       context: ResolverContext,
       info: any
     ) => {
-      return context.dataSources.productDataSource.getProducts();
+      const products = await context.dataSources.productDataSource.getProducts(args);
+      return products;
     },
   },
 };

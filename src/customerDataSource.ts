@@ -2,6 +2,7 @@
 import { DataSource } from "apollo-datasource";
 import * as fs from "fs";
 import csvtojson from "csvtojson";
+import { CustomerArgs } from "./resolvers";
 //maybe try changing this from an interface to an array? like our ts types
 interface Customer {
   email: string;
@@ -35,8 +36,17 @@ export class CustomerDataSource extends DataSource {
     }
   }
 
-  async getCustomers(): Promise<Customer[]> {
+  async getCustomers(args: CustomerArgs): Promise<Customer[]> {
     await this.loadData();
-    return this.customers;
+    const filteredCustomers = this.customers.filter(customer => {
+      for (const key in args) {
+        if (args.hasOwnProperty(key) && args[key] && customer[key as keyof Customer] !== args[key]) {
+          return false;
+        }
+      }
+      return true;
+    });
+    return filteredCustomers;
   }
 }
+

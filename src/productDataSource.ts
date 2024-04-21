@@ -2,6 +2,7 @@
 import { DataSource } from "apollo-datasource";
 import * as fs from "fs";
 import csvtojson from "csvtojson";
+import { ProductArgs } from "./resolvers";
 
 interface Product {
   vin: string;
@@ -29,8 +30,16 @@ export class ProductDataSource extends DataSource {
     this.products = (await csvtojson().fromString(fileContent)) as Product[];
   }
 
-  async getProducts(): Promise<Product[]> {
+  async getProducts(args: ProductArgs): Promise<Product[]> {
     await this.loadData();
-    return this.products;
+    const filteredProducts = this.products.filter(product => {
+      for (const key in args) {
+        if (args.hasOwnProperty(key) && args[key] && product[key as keyof Product] !== args[key]) {
+          return false;
+        }
+      }
+      return true;
+    });
+    return filteredProducts;
   }
 }
