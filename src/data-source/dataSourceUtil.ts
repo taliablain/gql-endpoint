@@ -1,10 +1,6 @@
 import { DataSource } from "apollo-datasource";
 
-export class CustomDataSource<T> {
-  data: T[];
-
-  constructor(data: T[] = []) {
-    // Provide a default value for data
-    this.data = data;
-  }
+export interface DataRepository<T> {
+  loadData(): Promise<void>;
+  getData(args: T): Promise<T[]>;
 }

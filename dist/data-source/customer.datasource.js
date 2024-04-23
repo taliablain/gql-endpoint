@@ -36,13 +36,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CustomerDataSource = void 0;
-// src/dataSources/customerDataSource.ts
 const apollo_datasource_1 = require("apollo-datasource");
 const fs = __importStar(require("fs"));
 const csvtojson_1 = __importDefault(require("csvtojson"));
 class CustomerDataSource extends apollo_datasource_1.DataSource {
     constructor() {
         super();
+        this.dataSourceType = process.env.DATA_SOURCE_TYPE || "csv";
         this.customers = [];
         this.loadData().catch((err) => {
             console.error("Error loading data:", err);
@@ -51,26 +51,47 @@ class CustomerDataSource extends apollo_datasource_1.DataSource {
     loadData() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const fileContent = fs.readFileSync("/Users/taliablain/gql-endpoint/src/data/customer.csv", "utf-8");
-                const result = (yield (0, csvtojson_1.default)().fromString(fileContent));
-                this.customers = result;
+                // Load data based on the configured data source type
+                if (this.dataSourceType === "csv") {
+                    const fileContent = fs.readFileSync("/Users/taliablain/gql-endpoint/src/data/customer.csv", "utf-8");
+                    const result = yield (0, csvtojson_1.default)().fromString(fileContent);
+                    this.customers = result;
+                }
+                else if (this.dataSourceType === "db") {
+                    // Stubbed out external database connection
+                    console.log("Fetching customers from external database...");
+                    this.customers = []; // Placeholder for actual data retrieval from DB
+                }
+                else {
+                    throw new Error("Invalid data source type specified in .env file");
+                }
             }
             catch (error) {
-                throw new Error(`Error loading data`);
+                throw new Error(`Error loading data: ${error}`);
             }
         });
     }
-    getCustomers(args) {
+    getData(args) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.loadData();
-            const filteredCustomers = this.customers.filter(customer => {
+            const filteredCustomers = this.customers
+                .filter((customer) => {
                 for (const key in args) {
-                    if (args.hasOwnProperty(key) && args[key] && customer[key] !== args[key]) {
+                    if (args.hasOwnProperty(key) &&
+                        args[key] &&
+                        customer[key] !== args[key]) {
                         return false;
                     }
                 }
                 return true;
-            });
+            })
+                .map((customer) => ({
+                email: customer.email,
+                forename: customer.forename,
+                surname: customer.surname,
+                contactNumber: customer.contact_number,
+                postcode: customer.postcode,
+            }));
             return filteredCustomers;
         });
     }

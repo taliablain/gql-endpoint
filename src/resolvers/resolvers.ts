@@ -31,21 +31,19 @@ export type ProductArgs = {
 const resolvers = {
   Query: {
     customers: async (
-      parent: any,
+      _parent: any,
       args: CustomerArgs,
       context: ResolverContext,
-      info: any
     ) => {
-      const customers = await context.dataSources.customerDataSource.getCustomers(args);
+      const customers = await context.dataSources.customerDataSource.getData(args);
       return customers;
     },
     products: async (
-      parent: any,
+      _parent: any,
       args: ProductArgs,
       context: ResolverContext,
-      info: any
     ) => {
-      const products = await context.dataSources.productDataSource.getProducts(args);
+      const products = await context.dataSources.productDataSource.getData(args);
       return products;
     },
   },

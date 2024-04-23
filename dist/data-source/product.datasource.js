@@ -36,33 +36,62 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductDataSource = void 0;
-// src/dataSources/productDataSource.ts
 const apollo_datasource_1 = require("apollo-datasource");
 const fs = __importStar(require("fs"));
 const csvtojson_1 = __importDefault(require("csvtojson"));
 class ProductDataSource extends apollo_datasource_1.DataSource {
     constructor() {
         super();
+        this.dataSourceType = process.env.DATA_SOURCE_TYPE || "csv";
         this.products = [];
-        this.loadData();
+        this.loadData().catch((err) => {
+            console.error("Error loading data:", err);
+        });
     }
     loadData() {
         return __awaiter(this, void 0, void 0, function* () {
-            const fileContent = fs.readFileSync("/Users/taliablain/gql-endpoint/src/data/product.csv", "utf-8");
-            this.products = (yield (0, csvtojson_1.default)().fromString(fileContent));
+            try {
+                // Load data based on the configured data source type
+                if (this.dataSourceType === "csv") {
+                    const fileContent = fs.readFileSync("/Users/taliablain/gql-endpoint/src/data/customer.csv", "utf-8");
+                    const result = yield (0, csvtojson_1.default)().fromString(fileContent);
+                    this.products = result;
+                }
+                else if (this.dataSourceType === "db") {
+                    // Stubbed out external database connection
+                    console.log("Fetching customers from external database...");
+                    this.products = []; // Placeholder for actual data retrieval from DB
+                }
+                else {
+                    throw new Error("Invalid data source type specified in .env file");
+                }
+            }
+            catch (error) {
+                throw new Error(`Error loading data: ${error}`);
+            }
         });
     }
-    getProducts(args) {
+    getData(args) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.loadData();
-            const filteredProducts = this.products.filter(product => {
+            const filteredProducts = this.products
+                .filter((product) => {
                 for (const key in args) {
-                    if (args.hasOwnProperty(key) && args[key] && product[key] !== args[key]) {
+                    if (args.hasOwnProperty(key) &&
+                        args[key] &&
+                        product[key] !== args[key]) {
                         return false;
                     }
                 }
                 return true;
-            });
+            })
+                .map((product) => ({
+                vin: product.vin,
+                colour: product.colour,
+                make: product.make,
+                model: product.model,
+                price: product.price
+            }));
             return filteredProducts;
         });
     }
