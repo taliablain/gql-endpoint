@@ -44,7 +44,7 @@ query {
 Built With
 ----------
 
-* [!TypeScript][https://www.typescriptlang.org]
-* [!GraphQL][https://graphql.org]
-* [!Apollo Server][https://www.apollographql.com/docs/apollo-server]
-* [!Express][https://expressjs.com]
+* [TypeScript][https://www.typescriptlang.org]
+* [GraphQL][https://graphql.org]
+* [Apollo Server][https://www.apollographql.com/docs/apollo-server]
+* [Express][https://expressjs.com]
