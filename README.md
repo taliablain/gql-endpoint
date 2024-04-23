@@ -19,6 +19,8 @@ To get started, follow these steps:
     * yarn build
 3. Run the application:
     * yarn start
+4. Run the tests:
+    * yarn test
 
 * type: 'yarn dev' to run application in dev mode
 * type: 'yarn format' to run formatting on all ts files
@@ -44,7 +46,7 @@ query {
 Built With
 ----------
 
-* [TypeScript][https://www.typescriptlang.org]
-* [GraphQL][https://graphql.org]
-* [Apollo Server][https://www.apollographql.com/docs/apollo-server]
-* [Express][https://expressjs.com]
+* [TypeScript](https://www.typescriptlang.org)
+* [GraphQL](https://graphql.org)
+* [Apollo Server](https://www.apollographql.com/docs/apollo-server)
+* [Express](https://expressjs.com)
