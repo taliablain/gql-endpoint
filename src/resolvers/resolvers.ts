@@ -1,5 +1,3 @@
-// src/resolvers.ts
-
 import { CustomerDataSource } from "../data-source/customer.datasource";
 import { ProductDataSource } from "../data-source/product.datasource";
 
