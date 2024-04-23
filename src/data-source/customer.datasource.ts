@@ -29,7 +29,7 @@ export class CustomerDataSource
   async loadData(): Promise<void> {
     try {
       if (this.dataSourceType === "csv") {
-        this.customers = await loadData("/Users/taliablain/gql-endpoint/src/data/customer.csv");
+        this.customers = await loadData("src/data/customer.csv");
       } else if (this.dataSourceType === "db") {
         console.log("Fetching customers from external database...");
         this.customers = []; // Placeholder for actual data retrieval from DB

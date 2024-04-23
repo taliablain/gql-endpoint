@@ -25,7 +25,7 @@ class ProductDataSource extends apollo_datasource_1.DataSource {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (this.dataSourceType === "csv") {
-                    this.products = yield (0, dataSourceUtil_1.loadData)("/Users/taliablain/gql-endpoint/src/data/product.csv");
+                    this.products = yield (0, dataSourceUtil_1.loadData)("src/data/product.csv");
                 }
                 else if (this.dataSourceType === "db") {
                     console.log("Fetching customers from external database...");
