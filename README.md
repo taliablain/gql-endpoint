@@ -32,13 +32,13 @@ To interact with the GQL API use a tool like [Apollo Studio](https://studio.apol
 An example query to retrieve a list of customers: 
 
 ```graphql
-query {
-  customers {
+query  {
+  customers(contact_number: null, email: null, forename: null, surname: null, postcode: null) {
+    contact_number
     email
     forename
-    surname
-    contact_number
     postcode
+    surname
   }
 }
 ```
