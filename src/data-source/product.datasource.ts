@@ -2,7 +2,7 @@
 import { DataSource } from "apollo-datasource";
 import * as fs from "fs";
 import csvtojson from "csvtojson";
-import { ProductArgs } from "./resolvers";
+import { ProductArgs } from "../resolvers/resolvers";
 
 interface Product {
   vin: string;

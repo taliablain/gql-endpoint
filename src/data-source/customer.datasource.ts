@@ -2,7 +2,7 @@
 import { DataSource } from "apollo-datasource";
 import * as fs from "fs";
 import csvtojson from "csvtojson";
-import { CustomerArgs } from "./resolvers";
+import { CustomerArgs } from "../resolvers/resolvers";
 //maybe try changing this from an interface to an array? like our ts types
 interface Customer {
   email: string;

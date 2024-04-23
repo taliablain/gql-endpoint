@@ -1,7 +1,7 @@
 // src/resolvers.ts
 
-import { CustomerDataSource } from "./customerDataSource";
-import { ProductDataSource } from "./productDataSource";
+import { CustomerDataSource } from "../data-source/customer.datasource";
+import { ProductDataSource } from "../data-source/product.datasource";
 
 interface ResolverContext {
   dataSources: {
