@@ -29,6 +29,7 @@ To interact with the GQL API use a tool like [Apollo Studio](https://studio.apol
 
 An example query to retrieve a list of customers: 
 
+```graphql
 query {
   customers {
     email
@@ -38,11 +39,12 @@ query {
     postcode
   }
 }
+```
 
 Built With
 ----------
 
-* [![TypeScript]][https://www.typescriptlang.org]
-* [![GraphQL]][https://graphql.org]
-* [![Apollo Server]][https://www.apollographql.com/docs/apollo-server]
-* [![Express]][https://expressjs.com]
+* [!TypeScript][https://www.typescriptlang.org]
+* [!GraphQL][https://graphql.org]
+* [!Apollo Server][https://www.apollographql.com/docs/apollo-server]
+* [!Express][https://expressjs.com]
