@@ -11,22 +11,22 @@ interface ResolverContext {
 }
 
 export type CustomerArgs = {
-  email?: string,
-  forename?: string,
-  surname?: string,
-  contactNumber?: string,
-  postcode?: string,
+  email?: string;
+  forename?: string;
+  surname?: string;
+  contactNumber?: string;
+  postcode?: string;
   [key: string]: string | undefined; // Index signature indicating any string key is valid
-}
+};
 
 export type ProductArgs = {
-  vin?: string,
-  colour?: string,
-  make?: string,
-  model?: string,
-  price?: number,
-  [key: string]: string | number | undefined
-}
+  vin?: string;
+  colour?: string;
+  make?: string;
+  model?: string;
+  price?: number;
+  [key: string]: string | number | undefined; // Index signature indicating any string key is valid
+};
 
 const resolvers = {
   Query: {
@@ -35,7 +35,8 @@ const resolvers = {
       args: CustomerArgs,
       context: ResolverContext,
     ) => {
-      const customers = await context.dataSources.customerDataSource.getData(args);
+      const customers =
+        await context.dataSources.customerDataSource.getData(args);
       return customers;
     },
     products: async (
@@ -43,7 +44,8 @@ const resolvers = {
       args: ProductArgs,
       context: ResolverContext,
     ) => {
-      const products = await context.dataSources.productDataSource.getData(args);
+      const products =
+        await context.dataSources.productDataSource.getData(args);
       return products;
     },
   },

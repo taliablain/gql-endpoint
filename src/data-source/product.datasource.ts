@@ -2,7 +2,7 @@ import { DataSource } from "apollo-datasource";
 import * as fs from "fs";
 import csvtojson from "csvtojson";
 import { ProductArgs } from "../resolvers/resolvers";
-import { DataRepository } from "./dataSourceUtil";
+import { DataRepository, filterItems, loadData } from "./dataSourceUtil";
 
 interface Product {
   vin: string;
@@ -12,7 +12,10 @@ interface Product {
   price: number;
 }
 
-export class ProductDataSource extends DataSource implements DataRepository<ProductArgs> {
+export class ProductDataSource
+  extends DataSource
+  implements DataRepository<ProductArgs>
+{
   products: Product[];
   dataSourceType: string = process.env.DATA_SOURCE_TYPE || "csv";
 
@@ -26,13 +29,9 @@ export class ProductDataSource extends DataSource implements DataRepository<Prod
 
   async loadData(): Promise<void> {
     try {
-      // Load data based on the configured data source type
       if (this.dataSourceType === "csv") {
-        const fileContent = fs.readFileSync("/Users/taliablain/gql-endpoint/src/data/customer.csv", "utf-8");
-        const result = await csvtojson().fromString(fileContent) as Product[];
-        this.products = result;
+        this.products = await loadData("/Users/taliablain/gql-endpoint/src/data/product.csv");
       } else if (this.dataSourceType === "db") {
-        // Stubbed out external database connection
         console.log("Fetching customers from external database...");
         this.products = []; // Placeholder for actual data retrieval from DB
       } else {
@@ -45,26 +44,16 @@ export class ProductDataSource extends DataSource implements DataRepository<Prod
 
   async getData(args: ProductArgs): Promise<ProductArgs[]> {
     await this.loadData();
-    const filteredProducts: ProductArgs[] = this.products
-      .filter((product) => {
-        for (const key in args) {
-          if (
-            args.hasOwnProperty(key) &&
-            args[key] &&
-            product[key as keyof Product] !== args[key]
-          ) {
-            return false;
-          }
-        }
-        return true;
-      })
-      .map((product) => ({
-        vin: product.vin,
-        colour: product.colour,
-        make: product.make,
-        model: product.model,
-        price: product.price
-      }));
-    return filteredProducts;
+    const filteredProducts = this.products.filter((product) =>
+      filterItems({ item: product, args }),
+    );
+    const mappedProducts: ProductArgs[] = filteredProducts.map((product) => ({
+      vin: product.vin,
+      colour: product.colour,
+      make: product.make,
+      model: product.model,
+      price: product.price,
+    }));
+    return mappedProducts;
   }
 }
